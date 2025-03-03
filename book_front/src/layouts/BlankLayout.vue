@@ -3,7 +3,9 @@
 </script>
 
 <template>
-    <component :is="$route.meta.layout"/>
+    <div class="w-full">
+        <router-view/>
+    </div>
 </template>
 
 <style scoped>
