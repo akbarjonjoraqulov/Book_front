@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from "vue-router";
-import defaultLayout from "@/layouts/DefaultLayout.vue";
 import {defineAsyncComponent} from "vue";
 
 const routers = [
@@ -13,7 +12,7 @@ const routers = [
     {
         path: '/book_info',
         component: () => import('../Pages/BookInfoPage.vue'),
-        meta:{
+        meta: {
             layout: defineAsyncComponent(() => import('@/layouts/DefaultLayout.vue'))
         }
     },
