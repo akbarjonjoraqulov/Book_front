@@ -2,7 +2,11 @@
 import FormInput from "@/components/tags/FormInput.vue";
 import FormButton from "@/components/tags/FormButton.vue";
 import {reactive, ref} from "vue";
-import axios from "axios";
+import {useAuthorization} from "@/stores/users/authorization.js";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+console.log(router);
 
 let isLoading = ref();
 let authorization = reactive({
@@ -11,18 +15,11 @@ let authorization = reactive({
 });
 
 function auth() {
-    isLoading.value = true;
-    axios.post("http://localhost:8085/api/users/auth", authorization)
-        .then((res) => {
-            localStorage.setItem("token", res.data.token);
-            console.log("Token olindi!");
+    isLoading.value = true
+    useAuthorization().userAuth(authorization)
+        .then(() => {
+            router.push("/")
         })
-        .catch((err) => {
-            console.error(err);
-        })
-        .finally(() => {
-            isLoading.value = false;
-        });
 }
 
 </script>
@@ -33,8 +30,8 @@ function auth() {
         <div class="w-full max-w-sm bg-white p-8 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
             <form @submit.prevent="auth" class="space-y-4">
-                <FormInput v-model="authorization.email" props-id="email" label-name="email" input-type="email" />
-                <FormInput v-model="authorization.password" props-id="password" label-name="password" />
+                <FormInput v-model="authorization.email" props-id="email" label-name="email" input-type="email"/>
+                <FormInput v-model="authorization.password" props-id="password" label-name="password"/>
                 <FormButton text="Login" :loading="isLoading"/>
             </form>
         </div>
